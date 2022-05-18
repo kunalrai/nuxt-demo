@@ -1,9 +1,9 @@
 <template>
-    <div >
-        <h1>
-            About this app.
-        </h1>
-        <p>This is sample nuxt app.</p>
+    <div class="container">
+    
+   <h2 class="mx-4">This is home page</h2>
+
+
     </div>
 </template>
 
