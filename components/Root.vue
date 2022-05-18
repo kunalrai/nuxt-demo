@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <h1 class="text-center fill-red border-2">This is nuxt js tutorial.</h1>
+    <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
+    <h1 class="text-center fill-red border-2">This is nuxt js sample.</h1>
 
     <nav class="mx-4">
       <ul class="flex gap-x-2">
@@ -15,12 +16,12 @@
     <p v-else-if="$fetchState.error">An error occurred :(</p>
     <div v-else>
       <h1>Nuxt Mountains</h1>
-      <ul class="">
+      <ul class="flex gap-2">
         <div v-for="item of mountains">
           <div>
             {{ item.title }}
           </div>
-          <img class="" :src="`${item.image}`" :alt="item.src" />
+          <img class="" :src="`${item.image}`" :alt="item.src" width="200px" height="100px"/>
         </div>
       </ul>
     </div>
@@ -35,6 +36,16 @@ export default {
     posts: [],
     mountains: [],
   }),
+  activated() {
+    // Call fetch again if last fetch more than 30 sec ago
+    if (this.$fetchState.timestamp <= Date.now() - 2000) {
+      this.$fetch();
+    }
+  },
+  watch: {
+    "$route.query": "$fetch",
+  },
+
   async fetch() {
     this.mountains = await fetch("https://api.nuxtjs.dev/mountains").then(
       (res) => {
